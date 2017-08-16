@@ -78,3 +78,9 @@ theme: landscape
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type:
+
+# RSS feed
+feed:
+  type: atom
+  path: atom.xml
+  limit: 10
