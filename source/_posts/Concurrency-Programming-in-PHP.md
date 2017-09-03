@@ -91,12 +91,12 @@ while ($buffer = fread($socket, 8192)) {
 
 | Watcher Type | Callback Signature                       |
 | ------------ | ---------------------------------------- |
-| defer()      | function (string \$watcherId, \$callbackData) |
-| delay()      | function (string \$watcherId, \$callbackData) |
-| repeat()     | function (string \$watcherId, \$callbackData) |
-| onReadable() | function (string \$watcherId, \$stream, \$callbackData) |
-| onWritable() | function (string \$watcherId, $stream, \$callbackData) |
-| onSignal()   | function (string \$watcherId, $signal, \$callbackData) |
+| defer()      | function (string $watcherId, $callbackData) |
+| delay()      | function (string $watcherId, $callbackData) |
+| repeat()     | function (string $watcherId, $callbackData) |
+| onReadable() | function (string $watcherId, $stream, $callbackData) |
+| onWritable() | function (string $watcherId, $stream, $callbackData) |
+| onSignal()   | function (string $watcherId, $signal, $callbackData) |
 
 2. Controlling event watchers
 
