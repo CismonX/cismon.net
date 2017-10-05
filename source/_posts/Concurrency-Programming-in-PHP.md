@@ -11,7 +11,7 @@ tags:
 
 ### Bad examples
 
-1. Attempting to fetch the content from a remote.
+* Attempting to fetch the content from a remote.
 
 ```php
 $handle = curl_init('http://www.an-extremely-slow-website.com/');
@@ -19,7 +19,7 @@ $handle = curl_init('http://www.an-extremely-slow-website.com/');
 curl_exec($handle);
 ```
 
-2. Performing a slow MySQL query.
+* Performing a slow MySQL query.
 
 ```php
 $pdo = new PDO($dsn, $username, $password);
@@ -28,7 +28,7 @@ $stmt = $pdo->prepare('SELECT * FROM `history` WHERE `file_name` NOT LIKE "%.jpg
 $stmt->execute();
 ```
 
-3. Network transmission is slow.
+* Network transmission is slow.
 
 ```php
 //File length is about 2MiBs in total.
@@ -39,7 +39,7 @@ while ($buffer = fread($handle, 8192)) {
 fclose($handle);
 ```
 
-4. Deferring is needed.
+* Deferring is needed.
 
 ```php
 while ($buffer = fread($socket, 8192)) {
@@ -87,7 +87,7 @@ while ($buffer = fread($socket, 8192)) {
 
 ### Basic usage
 
-1. Event watchers
+* Event watchers
 
 | Watcher Type | Callback Signature                       |
 | ------------ | ---------------------------------------- |
@@ -98,7 +98,7 @@ while ($buffer = fread($socket, 8192)) {
 | onWritable() | function (string $watcherId, $stream, $callbackData) |
 | onSignal()   | function (string $watcherId, $signal, $callbackData) |
 
-2. Controlling event watchers
+* Controlling event watchers
 
 | Method        | Behaviour                                |
 | ------------- | ---------------------------------------- |
@@ -110,7 +110,7 @@ while ($buffer = fread($socket, 8192)) {
 | unreference() | Mark a watcher as unreferenced.          |
 | cancel()      | Destroy a watcher.                       |
 
-3. Demo
+* Example
 
 ```php
 use Amp\Loop;
@@ -153,14 +153,15 @@ echo "Terminated.\n";
 
 ### Promises
 
-1. What are Promises?
+* What are Promises?
 
 ![](promises.jpg)
 
-2. Asynchronous functions should return an instance of a class which implements `Amp\Promise`.
-3. Promises are created by an instance of `Amp\Deferred`, which resolves the promised value, and throws an exception when an error occurs.
-4. Unlike the Promises implemented in JavaScript and ReactPHP, etc, **thenables** in Amp are implemented with Coroutines.
-5. Demo
+1. Asynchronous functions should return an instance of a class which implements `Amp\Promise`.
+2. Promises are created by an instance of `Amp\Deferred`, which resolves the promised value, and throws an exception when an error occurs.
+3. Unlike the Promises implemented in JavaScript and ReactPHP, etc, **thenables** in Amp are implemented with Coroutines.
+
+* Example
 
 ```php
 use Amp\Loop;
@@ -193,7 +194,7 @@ Loop::run(function () {
 });
 ```
 
-6. Promise Combinators (in namespace `Amp\Promise`) combine multiple promises to a single Promise.
+* Promise Combinators (in namespace `Amp\Promise`) combine multiple promises to a single Promise.
 
 | Function | Behaviour                                |
 | -------- | ---------------------------------------- |
@@ -202,7 +203,7 @@ Loop::run(function () {
 | any()    | Resolve even when all Promises fail.     |
 | first()  | Resolve when the first Promise in the group resolves. |
 
-7. Promise Helpers (in namespace `Amp\Promise`)
+* Promise Helpers (in namespace `Amp\Promise`)
 
 | Function  | Behaviour                                |
 | --------- | ---------------------------------------- |
@@ -212,11 +213,11 @@ Loop::run(function () {
 
 ### Coroutines
 
-1. What are coroutines?
+* What are coroutines?
 
 ![](coroutine.png)
 
-2. In Amp, all yields of coroutines must be one of the following type.
+* In Amp, all yields of coroutines must be one of the following type.
 
 | Type                           | Description                              |
 | ------------------------------ | ---------------------------------------- |
@@ -224,7 +225,7 @@ Loop::run(function () {
 | React\Promise\PromiseInterface | Will be adapted to `Amp\Promise`.        |
 | array                          | Array of Promises will be combined implicitly to `Amp\Promise\All`. |
 
-3. Coroutine helpers (in Amp namespace)
+* Coroutine helpers (in Amp namespace)
 
 | Function                                 | Behaviour                                |
 | ---------------------------------------- | ---------------------------------------- |
@@ -233,7 +234,7 @@ Loop::run(function () {
 | call(callable \$callback, ...\$args) : Promise | Call the given function, and return a Promise. |
 | asyncCall(callable \$callback, ...\$args) : void | Do not return a Promise.                 |
 
-4. Examples:
+* Examples:
 
 ```php
 function asyncDivide($divisor, $dividend, $delay) {
@@ -263,9 +264,9 @@ Amp\Loop::run(function () {
 
 ### Iterators
 
-1. In Amp, an iterator iterates through a set of Promises, and resolves alongside with the Promises. It can be recognized as a "special" Promise which can be resolved multiple times.
-2. Iterators are created by `Amp\Emitter`.
-3. Iterator functions are listed below.
+* In Amp, an iterator iterates through a set of Promises, and resolves alongside with the Promises. It can be recognized as a "special" Promise which can be resolved multiple times.
+* Iterators are created by `Amp\Emitter`.
+* Iterator functions are listed below.
 
 | Method                  | Behaviour                                |
 | ----------------------- | ---------------------------------------- |
@@ -276,7 +277,7 @@ Amp\Loop::run(function () {
 | Emitter::iterate()      | Return instance of Iterator.             |
 | Iterator\fromIterable() | Converts arrays or `Traversable` objects into an Iterator. |
 
-4. Examples:
+* Examples:
 
 ```php
 function subtractToZero($init, $interval) {
@@ -302,7 +303,7 @@ Loop::run(function () {
 });
 ```
 
-5. Producer is a simplified form of emitter which can be used when all values can be emitted in a single coroutine.
+* Producer is a simplified form of emitter which can be used when all values can be emitted in a single coroutine.
 
 ```php
 Amp\Loop::run(function () {
@@ -318,14 +319,14 @@ Amp\Loop::run(function () {
 });
 ```
 
-6. Iterator combination functions combine an array of Iterators into a single Iterator.
+* Iterator combination functions combine an array of Iterators into a single Iterator.
 
 | Function          | Behaviour                              |
 | ----------------- | -------------------------------------- |
 | Iterator\concat() | Iterators are resolved one by one.     |
 | Iterator\merge()  | Iterators are resolved simultaneously. |
 
-7. Iterator transformation functions intervene the resolution of Iterators using Producer.
+* Iterator transformation functions intervene the resolution of Iterators using Producer.
 
 | Function          | Behaviour                                |
 | ----------------- | ---------------------------------------- |
@@ -354,8 +355,8 @@ Loop::run(function () {
 
 ### Cancellation
 
-1. Amp provides cancellation of a specific asynchronous operation. but it does not and **cannot** automatically handle cancellation. Instead, you should handle cancellation manually after its request.
-2. Cancellation is implemented using `Amp\CancellationTokenSource` and `Amp\CancellationToken`.
+* Amp provides cancellation of a specific asynchronous operation. but it does not and **cannot** automatically handle cancellation. Instead, you should handle cancellation manually after its request.
+* Cancellation is implemented using `Amp\CancellationTokenSource` and `Amp\CancellationToken`.
 
 | Method                                | Behaviour                                |
 | ------------------------------------- | ---------------------------------------- |
@@ -366,7 +367,7 @@ Loop::run(function () {
 | CancellationToken::subscribe()        | Callback will be invoked when the request occurs. |
 | CancellationToken::unsubscribe()      | Disable a specified callback by id.      |
 
-3. Examples:
+* Examples:
 
 ```php
 use Amp\Loop;

@@ -1,0 +1,43 @@
+# Logo (Font Awesome Class)
+fa_logo: fa-cube
+
+# Header
+menu:
+  Home: /
+  Archives: /archives
+  # About: /about.html
+  Tags: /tags
+  Categories: /categories
+
+# Default post title
+default_post_title: Untitled
+
+# Archive Date Format
+archive_date_format: MMM YYYY
+
+# Comments.
+comments:
+  # Disqus comments
+  disqus_shortname:
+
+# Google Analytics Tracking ID
+google_analytics:
+
+# Social Accounts
+# twitter_url: https://twitter.com/?lang=en
+# facebook_url: https://www.facebook.com/
+# instagram_url: https://www.instagram.com/
+# dribble_url: https://dribbble.com/
+github_url: https://github.com/CismonX
+# googleplus_url: https://plus.google.com/
+# behance_url: https://www.behance.net/
+# fivehundredpx_url: https://500px.com/
+email_url: admin@cismon.net
+rss_url: /atom.xml
+
+# Footer About Text
+footer_about: "A mere reflection to the memories."
+
+# Footer Copyright Line
+footer_copyright: "© 2017 CismonX all rights reserved.<br>Powered by <a href=\"https://hexo.io\">Hexo</a>"
+
