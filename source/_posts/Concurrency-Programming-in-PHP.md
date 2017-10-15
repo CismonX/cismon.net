@@ -231,8 +231,8 @@ Loop::run(function () {
 | ---------------------------------------- | ---------------------------------------- |
 | coroutine(callable $callback) : callable | Wrap a function into a coroutine.        |
 | asyncCoroutine(callable $callback) : callable | Callback function do not return a Promise when called. |
-| call(callable \$callback, ...\$args) : Promise | Call the given function, and return a Promise. |
-| asyncCall(callable \$callback, ...\$args) : void | Do not return a Promise.                 |
+| call(callable $callback, ...$args) : Promise | Call the given function, and return a Promise. |
+| asyncCall(callable $callback, ...$args) : void | Do not return a Promise.                 |
 
 * Examples:
 

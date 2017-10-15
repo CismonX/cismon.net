@@ -15,10 +15,13 @@ Going through the script several times, it seemed that there were nothing wrong 
 
 Then I found this. It's obvious that `grep Disk` may not work as expected.
 
-![](p2.png)
+```bash
+SIZE=`fdisk -l $DRIVE | grep Disk | awk '{print $5}'`
+CYLINDERS=`echo $SIZE/255/63/512 | bc`
+```
 
 Gotcha..
 
-![](p3.png)
+![](p2.png)
 
 The script worked after I changed system language to English. Perhaps we should **never** use Chinese(as well as other languages beside English) as system language. :)
