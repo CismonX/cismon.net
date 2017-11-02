@@ -25,3 +25,5 @@ Gotcha..
 ![](p2.png)
 
 The script worked after I changed system language to English. Perhaps we should **never** use Chinese(as well as other languages beside English) as system language. :)
+
+P.S. In fact, you can do something like `export LC_ALL="en_US.UTF-8"` to switch locale insead of language, if you really wanna use other languages.
