@@ -9,7 +9,7 @@ tags:
 
 Since PHP 7.0, a new Zend API was implemented for faster parameter parsing.
 
-For example, if your function accepts an interger parameter `foo`, then the code may look like this.
+For example, if your function accepts an integer parameter `foo`, then the code may look like this.
 
 ```C
 ZEND_PARSE_PARAMETERS_START(1, 1)
