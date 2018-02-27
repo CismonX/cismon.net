@@ -24,7 +24,7 @@ comments:
 google_analytics:
 
 # Social Accounts
-# twitter_url: https://twitter.com/?lang=en
+twitter_url: https://twitter.com/Ethereal_Axis
 # facebook_url: https://www.facebook.com/
 # instagram_url: https://www.instagram.com/
 # dribble_url: https://dribbble.com/
@@ -36,7 +36,7 @@ email_url: admin@cismon.net
 rss_url: /atom.xml
 
 # Footer About Text
-footer_about: "A mere reflection to the memories."
+footer_about: "<a href=\"https://blog.liebes.top/\" target=\"_blank\">Liebes的个人日志</a><br><a href=\"https://cyto.top/\" target=\"_blank\">Cytosineの有被小窝~</a><br><a href=\"http://flygon.net\" target=\"_blank\">龙哥盟</a><br><a href=\"http://blog.fed.ink\" target=\"_blank\">Ekki Múkk</a><br><a href=\"https://ame.moe\" target=\"_blank\">雨の言葉 – Zhyupeの鲜为人知の窝</a>"
 
 # Footer Copyright Line
 footer_copyright: "© 2017 CismonX all rights reserved.<br>Powered by <a href=\"https://hexo.io\">Hexo</a>"
