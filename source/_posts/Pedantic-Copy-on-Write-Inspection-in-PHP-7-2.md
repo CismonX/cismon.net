@@ -1,7 +1,9 @@
 ---
 title: '''Pedantic'' Copy-on-Write Inspection in PHP 7.2'
 date: 2018-04-11 09:53:17
-tags: PHP, Zend
+tags:
+  - PHP
+  - Zend
 category: essay
 ---
 ## 1. Copy-on-Write mechanism in PHP
