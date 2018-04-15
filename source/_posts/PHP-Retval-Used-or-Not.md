@@ -159,4 +159,23 @@ PHP_FUNTION(used_ret)
 }
 ```
 
-Just that simple :)
+Just that simple :) Now we can test it with a PHP script.
+
+```PHP
+function foo()
+{
+    if (used_ret()) {
+        echo 'Used.', PHP_EOL;
+    } else {
+        echo 'Not used.', PHP_EOL;
+    }
+    return 0;
+}
+foo();
+$bar = foo();
+```
+
+Expected output:
+
+> Not used.
+> Used.
