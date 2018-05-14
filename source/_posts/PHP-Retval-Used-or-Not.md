@@ -22,7 +22,7 @@ We can see that the return value is considered used if at least one of the follo
 
 * There's no previous execute data.
 * The function which called this function is not defined in userland PHP.
-* The result type stored in the opline of previous execute data is not `IS_UNUSED`.
+* The result type stored in the `opline` of previous execute data is not `IS_UNUSED`.
 
 ### 1.1 No previous execute data?
 
@@ -89,7 +89,7 @@ The `USED_RET()` macro will always yield true if the function which invoked the 
 
 ### 1.3 Result type of opline?
 
-Finally, we check whether return value is used by checking the `result_type` property of the opline from the calling scope. You can understand opline as "line of opcode", which is the current line of opcode executed from the calling scope.
+Finally, we check whether return value is used by checking the `result_type` property of the `opline` from the calling scope. You can understand `opline` as "line of opcode", which is the current line of opcode executed from the calling scope.
 
 The `result_type` can be one of the following values:
 
@@ -155,7 +155,7 @@ PHP_FUNTION(used_ret)
     ex = ex->prev_execute_data;
     if (!ex || !ZEND_USER_CODE(ex->func->common.type))
         RETURN_TRUE;
-    RETURN_BOOL(ex->opline->result_type != IS_UNUSED);
+    RETVAL_BOOL(ex->opline->result_type != IS_UNUSED);
 }
 ```
 
