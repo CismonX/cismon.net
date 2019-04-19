@@ -83,14 +83,14 @@ The instruction codes are defined in [zend_vm_opcodes.h](https://github.com/php/
 
 For example, the following assembly-like code represents `$c = $a + $b` (You can try that yourself by using phpdbg):
 
-```assembly
+```
 ADD    $a, $b, ~0  # "+" operator 
 ASSIGN $c, ~0      # "=" operator
 ```
 
 However, not all operators have a corresponding instruction (e.g. negation, greater than, not less than operators). PHP code `$c = $a > -$b` will be compiled to something like:
 
-```assembly
+```
 MUL        $b, -1, ~0  # Converted to "$b * (-1)" (since PHP 7.3).
 IS_SMALLER ~0, $a, ~1  # Converted to "<".
 ASSIGN     $c, ~1
@@ -127,7 +127,7 @@ $c = $b = $a += 1;
 
 Compiles to:
 
-```assembly
+```
 #                        (op1     op2     result) type
 ASSIGN     $a, 1       #  CV      CONST   UNUSED
 ADD        $a, 1,  ~1  #  CV      CONST   TMP_VAR
@@ -135,10 +135,9 @@ FREE       ~1          #  TMP_VAR UNUSED  UNUSED
 ADD        $a, 1,  ~2  #  CV      CONST   TMP_VAR
 ASSIGN     $b, ~2      #  CV      TMP_VAR UNUSED
 ASSIGN_ADD $a, 1       #  CV      CONST   UNUSED
-ASSIGN_ADD $a, 1,  %5  #  CV      CONST   VAR
-ASSIGN     $b, %5, %6  #  CV      VAR     VAR
-ASSIGN     $c, %6      #  CV      VAR     UNUSED
-# Note that we use '%' for VAR here, which is '@' in phpdbg.
+ASSIGN_ADD $a, 1,  @5  #  CV      CONST   VAR
+ASSIGN     $b, @5, @6  #  CV      VAR     VAR
+ASSIGN     $c, @6      #  CV      VAR     UNUSED
 ```
 
 We can see that, for an assignment instruction, whether it has a result depends on whether the result is used or not. But for non-assignment instructions, the result is **always** stored in a temporary variable, even when the result is unused, in case it needs to be freed.
@@ -257,28 +256,28 @@ Now we know that operator overloading in PHP can be achieved by setting user-def
 
 ### 4.1 Binary operators
 
-| Syntax      | Opcode                     |
-| ----------- | -------------------------- |
-| `$a + $b`   | `ZEND_ADD`                 |
-| `$a - $b`   | `ZEND_SUB`                 |
-| `$a * $b`   | `ZEND_MUL`                 |
-| `$a / $b`   | `ZEND_DIV`                 |
-| `$a % $b`   | `ZEND_MOD`                 |
-| `$a ** $b`  | `ZEND_POW`                 |
-| `$a << $b`  | `ZEND_SL`                  |
-| `$a >> $b`  | `ZEND_SR`                  |
-| `$a . $b`   | `ZEND_CONCAT`              |
-| `$a | $b`   | `ZEND_BW_OR`               |
-| `$a & $b`   | `ZEND_BW_AND`              |
-| `$a ^ $b`   | `ZEND_BW_XOR`              |
-| `$a === $b` | `ZEND_IS_IDENTICAL`        |
-| `$a !== $b` | `ZEND_IS_NOT_IDENTICAL`    |
-| `$a == $b`  | `ZEND_IS_EQUAL`            |
-| `$a != $b`  | `ZEND_IS_NOT_EQUAL`        |
-| `$a < $b`   | `ZEND_IS_SMALLER`          |
-| `$a <= $b`  | `ZEND_IS_SMALLER_OR_EQUAL` |
-| `$a xor $b` | `ZEND_BOOL_XOR`            |
-| `$a <=> $b` | `ZEND_SPACESHIP`           |
+| Syntax                    | Opcode                     |
+| ------------------------- | -------------------------- |
+| `$a + $b`                 | `ZEND_ADD`                 |
+| `$a - $b`                 | `ZEND_SUB`                 |
+| `$a * $b`                 | `ZEND_MUL`                 |
+| `$a / $b`                 | `ZEND_DIV`                 |
+| `$a % $b`                 | `ZEND_MOD`                 |
+| `$a ** $b`                | `ZEND_POW`                 |
+| `$a << $b`                | `ZEND_SL`                  |
+| `$a >> $b`                | `ZEND_SR`                  |
+| `$a . $b`                 | `ZEND_CONCAT`              |
+| <code>$a &#124; $b</code> | `ZEND_BW_OR`               |
+| `$a & $b`                 | `ZEND_BW_AND`              |
+| `$a ^ $b`                 | `ZEND_BW_XOR`              |
+| `$a === $b`               | `ZEND_IS_IDENTICAL`        |
+| `$a !== $b`               | `ZEND_IS_NOT_IDENTICAL`    |
+| `$a == $b`                | `ZEND_IS_EQUAL`            |
+| `$a != $b`                | `ZEND_IS_NOT_EQUAL`        |
+| `$a < $b`                 | `ZEND_IS_SMALLER`          |
+| `$a <= $b`                | `ZEND_IS_SMALLER_OR_EQUAL` |
+| `$a xor $b`               | `ZEND_BOOL_XOR`            |
+| `$a <=> $b`               | `ZEND_SPACESHIP`           |
 
 A binary operator takes two operands, and always returns a value. Modification of either operand is allowed, provided that the operand type is `IS_CV`.
 
@@ -305,22 +304,22 @@ int is_smaller_handler(zend_execute_data *execute_data) {
 
 ### 4.2 Binary assignment operators
 
-| Syntax      | Opcode               |
-| ----------- | -------------------- |
-| `$a += $b`  | `ZEND_ASSIGN_ADD`    |
-| `$a -= $b`  | `ZEND_ASSIGN_SUB`    |
-| `$a *= $b`  | `ZEND_ASSIGN_MUL`    |
-| `$a /= $b`  | `ZEND_ASSIGN_DIV`    |
-| `$a %= $b`  | `ZEND_ASSIGN_MOD`    |
-| `$a **= $b` | `ZEND_ASSIGN_POW`    |
-| `$a <<= $b` | `ZEND_ASSIGN_SL`     |
-| `$a >>= $b` | `ZEND_ASSIGN_SR`     |
-| `$a .= $b`  | `ZEND_ASSIGN_CONCAT` |
-| `$a |= $b`  | `ZEND_ASSIGN_BW_OR`  |
-| `$a &= $b`  | `ZEND_ASSIGN_BW_AND` |
-| `$a ^= $b`  | `ZEND_ASSIGN_BW_XOR` |
-| `$a = $b`   | `ZEND_ASSIGN`        |
-| `$a =& $b`  | `ZEND_ASSIGN_REF`    |
+| Syntax                     | Opcode               |
+| -------------------------- | -------------------- |
+| `$a += $b`                 | `ZEND_ASSIGN_ADD`    |
+| `$a -= $b`                 | `ZEND_ASSIGN_SUB`    |
+| `$a *= $b`                 | `ZEND_ASSIGN_MUL`    |
+| `$a /= $b`                 | `ZEND_ASSIGN_DIV`    |
+| `$a %= $b`                 | `ZEND_ASSIGN_MOD`    |
+| `$a **= $b`                | `ZEND_ASSIGN_POW`    |
+| `$a <<= $b`                | `ZEND_ASSIGN_SL`     |
+| `$a >>= $b`                | `ZEND_ASSIGN_SR`     |
+| `$a .= $b`                 | `ZEND_ASSIGN_CONCAT` |
+| <code>$a &#124;= $b</code> | `ZEND_ASSIGN_BW_OR`  |
+| `$a &= $b`                 | `ZEND_ASSIGN_BW_AND` |
+| `$a ^= $b`                 | `ZEND_ASSIGN_BW_XOR` |
+| `$a = $b`                  | `ZEND_ASSIGN`        |
+| `$a =& $b`                 | `ZEND_ASSIGN_REF`    |
 
 Binary assignment operators behaves similar to non-assignment binary operators, with the exception that it should not generate a result when it is not used (`opline->result_type == IS_UNUSED`). When you overload these operators, make sure that you **never** touch the result `zval` in such circumstances.
 
@@ -415,7 +414,7 @@ $b = 'foo' . 'bar';
 
 You will get:
 
-```assembly
+```
 ASSIGN $a, 50
 ASSIGN $b, "foobar"
 ```
@@ -429,5 +428,6 @@ You can see that the value of `$a` and `$b` is calculated at compile time, and t
   * [complex.cc](https://github.com/CismonX/php-armadillo/blob/master/src/complex.cc), which implements the class `Complex`.
   * [operators.cc](https://github.com/CismonX/php-armadillo/blob/master/src/operators.cc), which implements operator overloading.
   * [002-complex-operators.phpt](https://github.com/CismonX/php-armadillo/blob/master/tests/002-complex-operators.phpt), a test case.
-* Overriding opcode handlers can be used for various purposes other than operator overloading. For example, when you are implementing a profiler, you may want to handle `ZEND_DO_FCALL`.
+* Overriding opcode handlers can be used for various purposes other than operator overloading. For example, when you are implementing a profiler, you may want to handle `ZEND_INIT_FCALL` and `ZEND_RETURN`.
+* Every coin has two sides. Overriding opcode handlers will reduce overall performance of your PHP script, as additional handler functions are called every time when executing a hooked opcode.
 
