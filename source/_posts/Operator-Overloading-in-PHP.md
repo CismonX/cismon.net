@@ -109,7 +109,6 @@ Operand type can be of following:
 ```
 
 * If the operand is not used by the instruction, or the instruction doesn't generate a result, the type of corresponding `znode_op` is `IS_UNUSED`.
-
 * If the operand is a **literal**, its type is `IS_CONST`.
 * If the operand is the **temporary value** returned by an expression, its type is `IS_TMP_VAR`.
 * If the operand is a **variable** known at **compile time**, its type is `IS_CV`.
